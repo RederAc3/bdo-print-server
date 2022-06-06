@@ -1,0 +1,23 @@
+{
+  "name": "bdo-print-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RederAc3/bdo-print-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RederAc3/bdo-print-server/issues"
+  },
+  "homepage": "https://github.com/RederAc3/bdo-print-server#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
