@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'crypto';
 
 const generateUrlPrinter = () => {
 
@@ -12,7 +12,10 @@ const generateUrlPrinter = () => {
         let data = JSON.stringify(config);
         fs.writeFileSync('config.json', data);
         console.log(`Zdalny adres drukarki: ${config.url}`);
+        return config.url;
     }
-} 
+
+    return config.url;
+}
 
 export default generateUrlPrinter;
