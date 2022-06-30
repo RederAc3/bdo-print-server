@@ -1,12 +1,12 @@
 import express from 'express';
 import axios from 'axios';
 
-import generateUrlPrinter from './functions/generateUrlPrinter.js'
+import generateUrlPrinter from './functions/generateUrlPrinter.js';
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json())
+app.use(express.json());
 
 generateUrlPrinter();
 
@@ -22,8 +22,8 @@ const isAuthorized = async (req, res, next) => {
 
     let data = {
         code: '17 04 05'
-    }
-    
+    };
+
     if (token) {
         try {
             await axios.post('https://test-bdo.mos.gov.pl/api/WasteRegister/v1/WasteCode/search', data, config)
@@ -41,6 +41,10 @@ app.post('/printers/:uuid', isAuthorized, (req, res) => {
 
 app.post('/printers/:uuid/print', isAuthorized, (req, res) => {
     res.json({ status: 'printed' })
+});
+
+app.post('/printers/:uuid/status', isAuthorized, (req, res) => {
+    res.json({ status: 'connected' })
 });
 
 app.all('*', (req, res) => {
