@@ -4,20 +4,28 @@ import qrcode from "qrcode-terminal";
 import generateSocketId from "./functions/generateSocketId.js";
 import getPrinterName from "./functions/getPrinterName.js";
 import addConfig from "./functions/addConfig.js";
+import getConfig from "./functions/getConfig.js";
 
-const socketId = generateSocketId();
+let socketId = getConfig("ID");
+
+if (!socketId) {
+    socketId = generateSocketId();
+    qrcode.generate(socketId, { small: true });
+    console.log(
+      `Zeskanuj kod QR w aplikacji mobilnej lub wpisz hasło parowania: ${socketId}`
+    );
+  }
 
 const client = io("http://api.rdnt.pl:5420");
 
 client.on("connect", () => {
     console.log("Połączono z serwerem");
-    qrcode.generate(socketId, { small: true });
-    console.log(`Wpisz kod połączenia w aplikacji mobilnej: ${socketId}`);
     client.emit("id", socketId);
 });
 
 client.on(`${socketId}/config`, (user) => {
     const printerName = getPrinterName();
+    
     addConfig({ printerName });
     addConfig({ user });
     
@@ -35,7 +43,7 @@ client.on(`${socketId}/print`, (url) => {
     console.log(`Drukownaie pliku ${url}`);
 
     const resPrint = {
-        printerName: getPrinterName(),
+        printerName:  getConfig('printerName'),
         printed: true
     };
     client.emit(`print`, resPrint);
