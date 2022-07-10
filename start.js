@@ -3,6 +3,7 @@ import qrcode from "qrcode-terminal";
 
 import generateSocketId from "./functions/generateSocketId.js";
 import getPrinterName from "./functions/getPrinterName.js";
+import addConfig from "./functions/addConfig.js";
 
 const socketId = generateSocketId();
 
@@ -16,13 +17,15 @@ client.on("connect", () => {
 });
 
 client.on(`${socketId}/config`, (user) => {
-
+    const printerName = getPrinterName();
+    addConfig({ printerName });
+    addConfig({ user });
+    
     console.log(`Drukarka podłączona do konta ${user}`);
-
     const resConfig = {
         socketId,
         config: true,
-        printerName: getPrinterName()
+        printerName
     };
 
     client.emit(`config`, resConfig);
