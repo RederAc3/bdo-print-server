@@ -16,7 +16,7 @@ if (!socketId) {
     );
 }
 
-const client = io("http://localhost:5420");
+const client = io("http://api.rdnt.pl:5420");
 
 client.on("connect", () => {
     console.log("Połączono z serwerem");
