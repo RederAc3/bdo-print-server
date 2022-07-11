@@ -12,9 +12,9 @@ if (!socketId) {
     socketId = generateSocketId();
     qrcode.generate(socketId, { small: true });
     console.log(
-      `Zeskanuj kod QR w aplikacji mobilnej lub wpisz hasło parowania: ${socketId}`
+        `Zeskanuj kod QR w aplikacji mobilnej lub wpisz hasło parowania: ${socketId}`
     );
-  }
+}
 
 const client = io("http://api.rdnt.pl:5420");
 
@@ -25,10 +25,10 @@ client.on("connect", () => {
 
 client.on(`${socketId}/config`, (user) => {
     const printerName = getPrinterName();
-    
-    addConfig({ printerName });
-    addConfig({ user });
-    
+
+    getConfig({ printerName }) ? addConfig({ printerName }) : null
+    getConfig({ user }) ? addConfig({ user }) : null
+
     console.log(`Drukarka podłączona do konta ${user}`);
     const resConfig = {
         socketId,
@@ -40,11 +40,17 @@ client.on(`${socketId}/config`, (user) => {
 });
 
 client.on(`${socketId}/print`, (url) => {
-    console.log(`Drukownaie pliku ${url}`);
+    const user = getConfig({ user })
+    let resPrint = {}
 
-    const resPrint = {
-        printerName:  getConfig('printerName'),
-        printed: true
-    };
+    if (user) {
+        console.log(`Drukownaie pliku ${url}`);
+
+        resPrint = {
+            printerName: getConfig('printerName'),
+            printed: true
+        };
+    } else resPrint = { message: 'unconfigured', printed: false };
+
     client.emit(`print`, resPrint);
 });
