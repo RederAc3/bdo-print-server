@@ -16,7 +16,7 @@ if (!socketId) {
     );
 }
 
-const client = io("http://api.rdnt.pl:5420");
+const client = io("http://localhost:5420");
 
 client.on("connect", () => {
     console.log("Połączono z serwerem");
@@ -26,8 +26,8 @@ client.on("connect", () => {
 client.on(`${socketId}/config`, (user) => {
     const printerName = getPrinterName();
 
-    getConfig('printerName') ? addConfig({ printerName }) : null
-    getConfig('user') ? addConfig({ user }) : null
+    !getConfig('printerName') ? addConfig({ printerName }) : null
+    !getConfig('user') ? addConfig({ user }) : null
 
     console.log(`Drukarka podłączona do konta ${user}`);
     const resConfig = {
