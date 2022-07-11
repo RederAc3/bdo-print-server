@@ -26,8 +26,8 @@ client.on("connect", () => {
 client.on(`${socketId}/config`, (user) => {
     const printerName = getPrinterName();
 
-    getConfig({ printerName }) ? addConfig({ printerName }) : null
-    getConfig({ user }) ? addConfig({ user }) : null
+    getConfig('printerName') ? addConfig({ printerName }) : null
+    getConfig('user') ? addConfig({ user }) : null
 
     console.log(`Drukarka podłączona do konta ${user}`);
     const resConfig = {
@@ -40,7 +40,7 @@ client.on(`${socketId}/config`, (user) => {
 });
 
 client.on(`${socketId}/print`, (url) => {
-    const user = getConfig({ user })
+    const user = getConfig('user')
     let resPrint = {}
 
     if (user) {
